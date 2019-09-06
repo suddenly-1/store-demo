@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="homeHeader">
     <base-header>
       <div slot="left">
         <i class="iconfont iconsaoyisao"></i>
@@ -27,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~assets/scss/mixins';
-  .header{
+  .homeHeader{
     width: 100%;
     height: $navbar-height;
   }

@@ -27,8 +27,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // background-color: transparent;
-    background-color: #aaa;
+    background-color: $header-bgc-translucent;
     &-left{
       margin: 0 10px;
     }
