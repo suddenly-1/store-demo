@@ -40,6 +40,10 @@ export default new Router({
       name: 'search',
       path: '/search',
       component: search
+    },
+    {
+      path: '*',
+      redirect: 'home'
     }
   ]
 })

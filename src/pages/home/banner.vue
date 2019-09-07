@@ -1,6 +1,9 @@
 <template>
   <div class="homeBanner">
-    <base-slide v-if="slides.length">
+    <div class="loading" v-if="!slides.length">
+      <base-loading class="baseLoading"></base-loading>
+    </div>
+    <base-slide v-else :slides="slides">
       <swiper-slide v-for="(item, index) of slides" :key="index">
         <img class="img" :src="item.picUrl">
       </swiper-slide>
@@ -9,13 +12,15 @@
 </template>
 
 <script>
+import BaseLoading from 'base/loading'
 import BaseSlide from 'base/slide'
 import { getHomeApi } from 'api/home'
 
 export default {
   name: 'HomeBanner',
   components: {
-    BaseSlide
+    BaseSlide,
+    BaseLoading
   },
   data () {
     return {
@@ -26,12 +31,16 @@ export default {
     this.getSliders()
   },
   methods: {
+    update () {
+      // this.$options.methods.getSliders()
+      return this.getSliders()
+    },
     getSliders () {
       // getHomeSlide().then(data => {
       //   console.log(data)
       //   this.slides = data
       // })
-      getHomeApi().then(data => {
+      return getHomeApi().then(data => {
         this.slides = data
       })
     }
@@ -44,6 +53,17 @@ export default {
     width: 100%;
     height: 0;
     padding-bottom: 39.57%;
+    .loading{
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 39.57%;
+    }
+    .baseLoading{
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
   }
   .img{
     width: 100%;

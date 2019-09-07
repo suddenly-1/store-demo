@@ -1,6 +1,8 @@
 @import "mixins";
 
 .g-tabber{
+  position: absolute;
+  bottom: -100%;
   display: flex;
   justify-content: center;
   align-items: center;

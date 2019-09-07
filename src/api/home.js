@@ -27,13 +27,32 @@ export const getHomeSlide = () => {
   })
 }
 
+const shuffle = (arr) => {
+  const arrLength = arr.length
+  let i = arrLength
+  let rndNum
+  while (i--) {
+    if (i !== (rndNum = Math.floor(Math.random() * arrLength))) {
+      [arr[i], arr[rndNum]] = [arr[rndNum], arr[i]]
+    }
+  }
+  return arr
+}
+
 export const getHomeApi = () => {
   return axios.get('/api/banner.json', {
     timeout: 10000
   }).then(res => {
     if (res) {
       // console.log(res)
-      return res.data.slides
+      let soldes = res.data.slides
+      const solde = [soldes[Math.floor(Math.random() * soldes.length)]]
+      soldes = shuffle(soldes.filter(() => Math.random() >= 0.5))
+      // return res.data.slides
+      if (soldes.length === 0) {
+        return solde
+      }
+      return soldes
     }
     throw new Error('获取错误！')
   }).catch(err => {
@@ -41,10 +60,11 @@ export const getHomeApi = () => {
       console.log(err)
       return [{picUrl: require('assets/img/404.png')}]
     }
-  }).then(res => {
+  }).then(data => {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve(res)
+        // console.log(data)
+        resolve(data)
       }, 1000)
     })
   })
