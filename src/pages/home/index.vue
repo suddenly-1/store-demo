@@ -3,6 +3,8 @@
     <home-header></home-header>
     <base-scroll @pull-down="pullDownUpDate">
       <home-banner ref="updateBanner"></home-banner>
+      <home-navbar></home-navbar>
+      <home-recommend></home-recommend>
     </base-scroll>
   </div>
 </template>
@@ -10,6 +12,8 @@
 <script>
 import HomeHeader from './header'
 import HomeBanner from './banner'
+import HomeNavbar from './navbar'
+import HomeRecommend from './recommend'
 import BaseScroll from 'base/scroll'
 
 export default {
@@ -17,7 +21,9 @@ export default {
   components: {
     HomeHeader,
     HomeBanner,
-    BaseScroll
+    BaseScroll,
+    HomeNavbar,
+    HomeRecommend
   },
   methods: {
     pullDownUpDate (end) {

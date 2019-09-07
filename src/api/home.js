@@ -69,3 +69,31 @@ export const getHomeApi = () => {
     })
   })
 }
+
+//  获取navbar
+export const getHomeNavbar = () => {
+  return axios.get('/api/navbar.json', {
+    timeout: 10000
+  }).then(res => {
+    if (res) {
+      res = res.data
+      if (res.coke === 0 && res.navbars) {
+        return res.navbars
+      }
+    }
+    throw new Error('获取错误！')
+  }).catch(err => {
+    if (err) {
+      console.log(err)
+    }
+  }).then(data => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        console.log(data)
+        resolve(data)
+      }, 1000)
+    })
+  })
+}
+
+// 热门推荐recommend
