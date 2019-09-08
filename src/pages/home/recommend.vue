@@ -39,6 +39,9 @@ export default {
     }
   },
   methods: {
+    update () {
+      return this.getRecommends()
+    },
     getRecommends () {
       if (this.currentPage > this.totalPage) {
         return

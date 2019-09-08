@@ -1,12 +1,17 @@
 <template>
   <div class="baseScroll">
     <swiper :options="swiperOptions" ref="swiper">
+      <!-- 下拉刷新 -->
       <div class="scroll-pull-down" v-if="pullDown">
         <base-loading :text="loadingText" ref="loading"></base-loading>
       </div>
       <swiper-slide>
         <slot></slot>
       </swiper-slide>
+      <!-- 上拉刷新 -->
+      <div class="scroll-pull-up" v-if="pullUp">
+        <base-loading :text="loadingTextUp" ref="loadingUp"></base-loading>
+      </div>
       <div class="swiper-scrollbar" v-if="scrollbar" slot="scrollbar"></div>
     </swiper>
   </div>
@@ -19,13 +24,12 @@ import {
   PULL_DOWN_TEXT_INIT,
   PULL_DOWN_TEXT_START,
   PULL_DOWN_TEXT_ING,
-  PULL_DOWN_TEXT_END
-  // ,
-  // PULL_UP_HEIGHT,
-  // PULL_UP_TEXT_INIT,
-  // PULL_UP_TEXT_START,
-  // PULL_UP_TEXT_ING,
-  // PULL_UP_TEXT_END
+  PULL_DOWN_TEXT_END,
+  PULL_UP_HEIGHT,
+  PULL_UP_TEXT_INIT,
+  PULL_UP_TEXT_START,
+  PULL_UP_TEXT_ING,
+  PULL_UP_TEXT_END
 } from './config'
 
 export default {
@@ -39,6 +43,10 @@ export default {
       default: true
     },
     pullDown: {
+      type: Boolean,
+      default: true
+    },
+    pullUp: {
       type: Boolean,
       default: true
     },
@@ -65,6 +73,7 @@ export default {
         observeParents: true
       },
       loadingText: PULL_DOWN_TEXT_INIT,
+      loadingTextUp: PULL_UP_TEXT_INIT,
       pullDownActive: false
     }
   },
@@ -90,10 +99,23 @@ export default {
       if (!this.pullDown) {
         return
       }
-      if (swiper.translate > PULL_DOWN_HEIGHT) {
-        this.$refs.loading.setText(PULL_DOWN_TEXT_START)
-      } else {
-        this.$refs.loading.setText(PULL_DOWN_TEXT_INIT)
+      if (swiper.translate > 0) {
+        if (swiper.translate > PULL_DOWN_HEIGHT) {
+          this.$refs.loading.setText(PULL_DOWN_TEXT_START)
+        } else {
+          this.$refs.loading.setText(PULL_DOWN_TEXT_INIT)
+        }
+        //  上拉
+      } else if (swiper.isEnd) {
+        if (!this.pullUp) {
+          return
+        }
+        const isPullUp = Math.abs(swiper.translate) + swiper.height - PULL_UP_HEIGHT > parseInt(swiper.$wrapperEl.css('height'))
+        if (isPullUp) {
+          this.$refs.loadingUp.setText(PULL_UP_TEXT_START)
+        } else {
+          this.$refs.loadingUp.setText(PULL_UP_TEXT_INIT)
+        }
       }
     },
     touchEnd () {
@@ -113,6 +135,19 @@ export default {
         swiper.params.virtualTranslate = true// 定住不给回弹
         this.$refs.loading.setText(PULL_DOWN_TEXT_ING)
         this.$emit('pull-down', this.pullDownEnd)
+        //  上拉刷新中
+      } else if (swiper.isEnd) {
+        const totalHeight = parseInt(swiper.$wrapperEl.css('height'))
+        const isPullUp = Math.abs(swiper.translate) + swiper.height - PULL_UP_HEIGHT > totalHeight
+        if (isPullUp) {
+          this.pullDownActive = true
+          swiper.allowTouchMove = false// 禁止触摸
+          swiper.setTransition(swiper.params.speed)
+          swiper.setTranslate(-(totalHeight + PULL_UP_HEIGHT - swiper.height))
+          swiper.params.virtualTranslate = true// 定住不给回弹
+          this.$refs.loading.setText(PULL_UP_TEXT_ING)
+          this.$emit('pull-up', this.pullUpEnd)
+        }
       }
     },
     //  下拉刷新结束
@@ -124,6 +159,15 @@ export default {
       swiper.allowTouchMove = true // 解除禁止触摸
       swiper.setTransition(swiper.params.speed)
       swiper.setTranslate(0)
+    },
+    pullUpEnd () {
+      this.pullDownActive = false
+      const swiper = this.$refs.swiper.swiper
+      swiper.params.virtualTranslate = false // 解除定住不给回弹
+      this.$refs.loading.setText(PULL_UP_TEXT_END)
+      swiper.allowTouchMove = true // 解除禁止触摸
+      swiper.setTransition(swiper.params.speed)
+      // swiper.setTranslate(0)
     }
   }
 }
