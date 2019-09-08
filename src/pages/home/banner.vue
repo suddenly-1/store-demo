@@ -1,14 +1,14 @@
 <template>
-  <div class="homeBanner">
-    <div class="loading" v-if="!slides.length">
-      <base-loading class="baseLoading"></base-loading>
+    <div class="homeBanner">
+      <div class="loading" v-if="!slides.length">
+        <base-loading class="baseLoading"></base-loading>
+      </div>
+      <base-slide v-else :slides="slides">
+        <swiper-slide v-for="(item, index) of slides" :key="index">
+          <img class="img" :src="item.picUrl">
+        </swiper-slide>
+      </base-slide>
     </div>
-    <base-slide v-else :slides="slides">
-      <swiper-slide v-for="(item, index) of slides" :key="index">
-        <img class="img" :src="item.picUrl">
-      </swiper-slide>
-    </base-slide>
-  </div>
 </template>
 
 <script>
@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     update () {
-      // this.$options.methods.getSliders()
       return this.getSliders()
     },
     getSliders () {
@@ -52,6 +51,7 @@ export default {
   .homeBanner{
     width: 100%;
     height: 0;
+    padding-top: 50px;
     padding-bottom: 39.57%;
     .loading{
       position: relative;

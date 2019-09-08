@@ -48,7 +48,6 @@ export default {
       }
       return getHomeRecommend(this.currentPage).then(data => {
         if (data) {
-          console.log(data)
           this.currentPage++
           this.totalPage = data.totalPage
           this.recommends = this.recommends.concat(data.itemList)
@@ -66,6 +65,7 @@ export default {
 <style lang="scss" scoped>
   .loading{
     margin-top: 70px;
+    height: 300px;
   }
   .recommend{
     width: 100%;

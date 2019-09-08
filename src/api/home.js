@@ -45,11 +45,9 @@ export const getHomeApi = () => {
     timeout: 10000
   }).then(res => {
     if (res) {
-      // console.log(res)
       let soldes = res.data.slides
       const solde = [soldes[Math.floor(Math.random() * soldes.length)]]
       soldes = shuffle(soldes.filter(() => Math.random() >= 0.5))
-      // return res.data.slides
       if (soldes.length === 0) {
         return solde
       }
@@ -64,7 +62,6 @@ export const getHomeApi = () => {
   }).then(data => {
     return new Promise(resolve => {
       setTimeout(() => {
-        // console.log(data)
         resolve(data)
       }, 1000)
     })
@@ -90,7 +87,6 @@ export const getHomeNavbar = () => {
   }).then(data => {
     return new Promise(resolve => {
       setTimeout(() => {
-        // console.log(data)
         resolve(data)
       }, 1000)
     })

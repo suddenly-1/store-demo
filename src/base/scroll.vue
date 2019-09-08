@@ -83,6 +83,9 @@ export default {
     }
   },
   methods: {
+    scrollToTop () {
+      this.$refs.swiper && this.$refs.swiper.swiper.slideTo(0, 300, false)
+    },
     update () {
       this.$nextTick(() => {
         this.$refs.swiper && this.$refs.swiper.swiper.update()
@@ -118,7 +121,11 @@ export default {
         }
       }
     },
+    // scrollEnd () {
+    //   this.$emit('scroll-end', this.$refs.swiper.swiper.translate, this.$refs.swiper.swiper, this.pullDownActive)
+    // },
     touchEnd () {
+      this.$emit('scroll-end', this.$refs.swiper.swiper.translate, this.$refs.swiper.swiper.height)
       if (this.pullDownActive) {
         return
       }
@@ -179,7 +186,7 @@ export default {
   .baseScroll{
     height: 100%;
     box-sizing: border-box;
-    padding-bottom: $tabbar-height;
+    // padding-bottom: $tabbar-height;
   }
   .swiper-container{
     overflow: hidden;
@@ -191,7 +198,7 @@ export default {
   }
   .scroll-pull-down{
     position: absolute;
-    top: -80px;
+    top: -30px;
     height: 80px;
     width: 100%;
     display: flex;
