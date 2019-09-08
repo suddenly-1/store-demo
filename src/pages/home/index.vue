@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <home-header></home-header>
-    <base-scroll @pull-down="pullDownUpDate">
+    <base-scroll @pull-down="pullDownUpDate" ref="scroll" :recommendsData="recommends">
       <home-banner ref="updateBanner"></home-banner>
       <home-navbar></home-navbar>
-      <home-recommend></home-recommend>
+      <home-recommend @recommends="updateRecommends"></home-recommend>
     </base-scroll>
   </div>
 </template>
@@ -25,9 +25,17 @@ export default {
     HomeNavbar,
     HomeRecommend
   },
+  data () {
+    return {
+      recommends: []
+    }
+  },
   methods: {
     pullDownUpDate (end) {
       this.$refs.updateBanner.update().then(end)
+    },
+    updateRecommends (data) {
+      this.recommends = data
     }
   }
 }

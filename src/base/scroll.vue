@@ -41,6 +41,9 @@ export default {
     pullDown: {
       type: Boolean,
       default: true
+    },
+    recommendsData: {
+      type: [Object, Array]
     }
   },
   data () {
@@ -65,8 +68,19 @@ export default {
       pullDownActive: false
     }
   },
+  watch: {
+    recommendsData () {
+      this.update()
+    }
+  },
   methods: {
-    // const scroll = this.$refs.swiper.swiper.translate
+    update () {
+      this.$nextTick(() => {
+        this.$refs.swiper && this.$refs.swiper.swiper.update()
+        this.$refs.swiper.swiper.scrollbar.updateSize()
+      })
+    },
+
     scroll () {
       const swiper = this.$refs.swiper.swiper
       //  下拉

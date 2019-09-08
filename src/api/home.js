@@ -1,4 +1,5 @@
 import axios from 'axios'
+import jsonp from 'assets/js/jsonp'
 
 //  获取banner
 export const getHomeSlide = () => {
@@ -89,7 +90,7 @@ export const getHomeNavbar = () => {
   }).then(data => {
     return new Promise(resolve => {
       setTimeout(() => {
-        console.log(data)
+        // console.log(data)
         resolve(data)
       }, 1000)
     })
@@ -97,3 +98,33 @@ export const getHomeNavbar = () => {
 }
 
 // 热门推荐recommend
+export const getHomeRecommend = (page = 1, psize = 20) => {
+  const url = 'https://ju.taobao.com/json/tg/ajaxGetItemsV2.json'
+  const params = {
+    page,
+    psize,
+    type: 0,
+    frontCatId: ''
+  }
+  const jsonpOptions = {
+    param: 'callback',
+    timeout: 10000
+  }
+  return jsonp(url, params, jsonpOptions).then(res => {
+    if (res.code === '200') {
+      return res
+    }
+
+    throw new Error('获取错误！')
+  }).catch(err => {
+    if (err) {
+      console.log(err)
+    }
+  }).then(res => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(res)
+      }, 1000)
+    })
+  })
+}

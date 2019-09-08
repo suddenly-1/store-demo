@@ -1,8 +1,10 @@
 <template>
   <div class="navbar">
-    <swiper :options="swiperOptions">
+    <div class="loading" v-if="!pages.length">
+      <base-loading class="baseLoading"></base-loading>
+    </div>
+    <swiper :options="swiperOptions" v-else>
       <swiper-slide v-for="(navs, index) of pages" :key="index">
-      <!-- <swiper-slide v-for="(navs, index) of pages" :key="index"> -->
         <ul class="navbar-list">
           <li class="navbar-item" v-for="item of navs" :key="item.id">
             <img :src="item.picUrl" class="navbar-img">
@@ -16,10 +18,14 @@
 </template>
 
 <script>
+import BaseLoading from 'base/loading'
 import { getHomeNavbar } from 'api/home'
 
 export default {
   name: 'BaseNavbar',
+  components: {
+    BaseLoading
+  },
   data () {
     return {
       navbars: [],
@@ -57,6 +63,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .loading{
+    width: 100%;
+    height: 0;
+    padding-bottom: 55%;
+    position: relative;
+    .baseLoading{
+      position: absolute;
+      top: 50%;
+      margin-top: -16px;
+    }
+  }
   .swiper-container{
     overflow: visible;
   }
