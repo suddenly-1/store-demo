@@ -3,9 +3,9 @@
     <div class="g-view-container">
       <router-view></router-view>
     </div>
-    <div class="g-footer-container">
+    <!-- <div class="g-footer-container">
       <c-tabber/>
-    </div>
+    </div> -->
   </div>
 </template>
 

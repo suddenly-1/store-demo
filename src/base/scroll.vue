@@ -99,10 +99,10 @@ export default {
       if (this.pullDownActive) {
         return
       }
-      if (!this.pullDown) {
-        return
-      }
       if (swiper.translate > 0) {
+        if (!this.pullDown) {
+          return
+        }
         if (swiper.translate > PULL_DOWN_HEIGHT) {
           this.$refs.loading.setText(PULL_DOWN_TEXT_START)
         } else {
@@ -121,9 +121,6 @@ export default {
         }
       }
     },
-    // scrollEnd () {
-    //   this.$emit('scroll-end', this.$refs.swiper.swiper.translate, this.$refs.swiper.swiper, this.pullDownActive)
-    // },
     touchEnd () {
       this.$emit('scroll-end', this.$refs.swiper.swiper.translate, this.$refs.swiper.swiper.height)
       if (this.pullDownActive) {
@@ -147,6 +144,9 @@ export default {
         const totalHeight = parseInt(swiper.$wrapperEl.css('height'))
         const isPullUp = Math.abs(swiper.translate) + swiper.height - PULL_UP_HEIGHT > totalHeight
         if (isPullUp) {
+          if (!this.pullUp) {
+            return
+          }
           this.pullDownActive = true
           swiper.allowTouchMove = false// 禁止触摸
           swiper.setTransition(swiper.params.speed)
@@ -167,6 +167,7 @@ export default {
       swiper.setTransition(swiper.params.speed)
       swiper.setTranslate(0)
     },
+    //  上拉刷新结束
     pullUpEnd () {
       this.pullDownActive = false
       const swiper = this.$refs.swiper.swiper
@@ -174,7 +175,6 @@ export default {
       this.$refs.loading.setText(PULL_UP_TEXT_END)
       swiper.allowTouchMove = true // 解除禁止触摸
       swiper.setTransition(swiper.params.speed)
-      // swiper.setTranslate(0)
     }
   }
 }
@@ -183,10 +183,12 @@ export default {
 <style lang="scss" scoped>
 @import '~assets/scss/mixins';
 
+  .swiper-scrollbar{
+    display: none;
+  }
   .baseScroll{
     height: 100%;
     box-sizing: border-box;
-    // padding-bottom: $tabbar-height;
   }
   .swiper-container{
     overflow: hidden;
@@ -199,10 +201,9 @@ export default {
   .scroll-pull-down{
     position: absolute;
     top: -30px;
-    height: 80px;
+    height: 90px;
     width: 100%;
     display: flex;
     justify-content: center;
-    // background-color: #999;
   }
 </style>

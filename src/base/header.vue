@@ -27,7 +27,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: $header-bgc-translucent;
     &-left{
       margin: 0 10px;
     }
@@ -35,6 +34,8 @@ export default {
       margin: 0 10px;
     }
     &-center{
+      height:65%;
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;

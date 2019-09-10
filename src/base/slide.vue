@@ -52,17 +52,17 @@ export default {
       if (arr.length === 0) {
         return
       }
+      this.swiperOptions.loop = arr.length <= 1 ? false : this.loop
       this.keySwiper = Math.random()
     }
   },
   methods: {
     init () {
       this.swiperOptions = {
-        // nested: true,
         watchOverflow: true,
         slidesPerView: 1,
         direction: this.direction,
-        loop: this.slides.length > 1 ? this.loop : false,
+        loop: this.slides.length <= 1 ? false : this.loop,
         autoplay: this.interval ? {
           delay: this.interval,
           disableOnInteraction: false
@@ -70,9 +70,6 @@ export default {
         pagination: {
           el: this.pagination ? '.swiper-pagination' : null
         }
-        // observer: true,
-        // observeParents: true
-        // observeSlideChildren: true
       }
     }
   },
@@ -83,8 +80,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  // .swiper-container{
-  //   width: 100%;
-  //   height: 100%;
-  // }
+
 </style>

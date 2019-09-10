@@ -1,10 +1,21 @@
 <template>
   <div class="home">
     <home-header></home-header>
-    <base-scroll @scroll-end="scrollEnd" @pull-down="pullDownUpdate" @pull-up="pullUpUpdate" ref="scroll" :recommendsData="recommends">
+    <base-scroll
+      @scroll-end="scrollEnd"
+      @pull-down="pullDownUpdate"
+      @pull-up="pullUpUpdate"
+      ref="scroll"
+      :recommendsData="recommends"
+      :pullUp="pullUp"
+    >
       <home-banner ref="updateBanner"></home-banner>
       <home-navbar></home-navbar>
-      <home-recommend @recommends="updateRecommends" ref="updateRecommend"></home-recommend>
+      <home-recommend
+        @recommends="updateRecommends"
+        ref="updateRecommend"
+        @recommends-end="recommendsEnd"
+      ></home-recommend>
     </base-scroll>
     <base-backtop @backtop="backtop" :visible="visible"></base-backtop>
   </div>
@@ -31,9 +42,8 @@ export default {
   data () {
     return {
       recommends: [],
-      visible: false
-      // ,
-      // headerVisible: true
+      visible: false,
+      pullUp: true
     }
   },
   methods: {
@@ -43,21 +53,19 @@ export default {
     updateRecommends (data) {
       this.recommends = data
     },
+    recommendsEnd () {
+      this.pullUp = false
+      // this.$refs.scroll.update()
+    },
     pullUpUpdate (end) {
       this.$refs.updateRecommend.update().then(end)
     },
     backtop () {
       this.$refs.scroll.scrollToTop()
       this.visible = false
-      // this.headerVisible = true
     },
     scrollEnd (translate, scroll) {
       this.visible = translate < 0 && (-translate) > scroll
-      // if (translate < -200) {
-      //   this.headerVisible = false
-      // } else {
-      //   this.headerVisible = true
-      // }
     }
   }
 }

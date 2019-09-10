@@ -38,8 +38,8 @@ export default {
   .backtop{
     z-index: $backtop-z-index;
     position: fixed;
-    bottom: 60px;
-    right: 10px;
+    bottom: 15px;
+    right: 15px;
     width: 60px;
     height: 60px;
     border-radius: 50%;

@@ -19,6 +19,7 @@
         </div>
       </li>
     </ul>
+    <div class="recomend-end" v-show="recomendEnd">没有更多内容！</div>
   </div>
 </template>
 
@@ -35,7 +36,8 @@ export default {
     return {
       recommends: [],
       currentPage: 1,
-      totalPage: 1
+      totalPage: 5,
+      recomendEnd: false
     }
   },
   methods: {
@@ -44,12 +46,16 @@ export default {
     },
     getRecommends () {
       if (this.currentPage > this.totalPage) {
-        return
+        return getHomeRecommend(this.currentPage).then(data => {
+          this.recomendEnd = true
+          this.$emit('recommends-end', this.recommends)
+        })
       }
+
       return getHomeRecommend(this.currentPage).then(data => {
         if (data) {
           this.currentPage++
-          this.totalPage = data.totalPage
+          // this.totalPage = data.totalPage
           this.recommends = this.recommends.concat(data.itemList)
           this.$emit('recommends', this.recommends)
         }
@@ -66,6 +72,13 @@ export default {
   .loading{
     margin-top: 70px;
     height: 300px;
+  }
+  .recomend-end{
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
   }
   .recommend{
     width: 100%;
